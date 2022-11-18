@@ -1,0 +1,47 @@
+import numpy as np
+from scipy.misc import derivative
+
+def f(x):
+     return 3*pow(x,4) - 4*pow(x,3) + 2*pow(x,2) - 4*x - 1
+a = 1.5
+b = -1.5
+eps = 0.0001 
+df = derivative(f, a, n = 1)
+df2 = derivative(f, b, n = 2)
+g=df*df2
+
+def nuton(a,b,eps):
+    df2 = derivative(f, b, n = 2)
+    if (f(b)*df2>0):
+        xi = b
+    else:
+        xi = a
+    df = derivative(f,xi, n= 1)
+    xi_1 = xi - f(xi)/df
+    while (abs(xi_1 - xi)>eps): 
+        xi = xi_1
+        xi_1 = xi - f(xi)/df
+    return print ('Solving the equation by Newtons method x = ', xi_1)
+
+def hord(a,b,eps):
+    if abs(b-a)<eps:
+        print('кореня немає')
+        return
+    if(f(a)*derivative(f,a,n=2)):
+        xi = a
+        x0=b
+    else:
+        xi = a
+        x0=b
+    xi_1=xi-(xi-x0)*f(xi)/(f(xi)-f(x0))
+    while(abs(xi_1-xi)>eps):
+        xi=xi_1
+        xi_1=xi-(xi-x0)*f(xi)/(f(xi)-f(x0))
+    else:
+        print(f'Коріньзнаходиться в точці x =',xi_1)
+def combine(a,b,eps):
+    if (g>0):
+        hord(a,b,eps)
+    else:
+         nuton(a,b,eps)
+combine(a,b,eps)
